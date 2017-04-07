@@ -1,5 +1,8 @@
 require 'strscan'
+require_relative 'Expression'
 require_relative 'Token'
+require_relative 'Operator'
+
 
 class RubyParserMath
 
@@ -7,29 +10,40 @@ class RubyParserMath
 
 
 
-  class Expression < Struct.new(:op, :left, :right)
-  end
+  #class Expression < Struct.new(:op, :left, :right)
+  #end
 
   def initialize(str_file_location)
 
     @tokens =[]
 
     ruby_file = File.new(str_file_location)
+
     ruby_file_content = ruby_file.read
-    puts ruby_file_content
+
+    puts "ruby file content: #{ruby_file_content}"
 
     @string_scanner = StringScanner.new(ruby_file_content)
+
     @string_scanner.pos
+
     @full_expression
+
     @is_expression = false
 
     @full_expression = parse_expression(@string_scanner)
 
     puts "tokens: #{@tokens.join(', ')}"
+
     puts "full expression: #{@full_expression}"
 
     if @is_expression
-      puts "total = #{evaluate(@full_expression)}"
+
+      puts @full_expression.class
+
+      #puts "total = #{evaluate(@full_expression)}"
+
+      puts "total = #{(@full_expression).evaluate}"
     else
       puts "total = #{ruby_file_content}"
     end
@@ -47,15 +61,22 @@ class RubyParserMath
 
     string_scanner.skip(/\s+/)
 
-    #operator = string_scanner.scan(/\*|\+|\-/)
     operator = string_scanner.scan(/[\/|\*|\+|\-]{1,}/)
+
     puts "operator: #{operator}"
 
     if operator
+
       @tokens << operator
+
       @is_expression = true
+
       puts "tokens: #{@tokens.join(', ')}"
-      Expression.new(operator.downcase.to_sym, left_of_expression, parse_expression(string_scanner))
+
+      operator_object = Operator.new(operator)
+
+      #Expression.new(operator.downcase.to_sym, left_of_expression, parse_expression(string_scanner))
+      Expression.new(operator_object, left_of_expression, parse_expression(string_scanner))
 
     else
       left_of_expression
@@ -95,60 +116,6 @@ class RubyParserMath
         raise('number expected')
 
   end
-
-
-  def evaluate(expression)
-    puts "evaluating expression: left is: #{expression['left'].class}, right is: #{expression['right'].class}, operator is #{expression['op']}"
-
-    if expression['left'].class == Expression
-
-      left_value = evaluate(expression['left'])
-      puts "left_value: #{left_value}"
-
-    else
-
-      left_value = expression['left'].to_f
-      puts "left_value: #{left_value}"
-
-    end
-
-    if expression['right'].class == Expression
-
-      right_value = evaluate(expression['right'])
-      puts "right_value: #{right_value}"
-
-    else
-
-      right_value = expression['right'].to_i
-      puts "right_value: #{right_value}"
-
-    end
-
-    case expression['op'].to_s
-      when '+'
-        return (left_value + right_value)
-      when '-'
-        return (left_value - right_value)
-      when '*'
-        return (left_value * right_value)
-      when '/'
-        return (left_value / right_value)
-      else
-        return 'error'
-    end
-
-
-
-  end
-
-
-
-
-
-
-
-
-
 
   def parse_term(string_scanner)
     puts 'parsing term'
