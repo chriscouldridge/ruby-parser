@@ -47,8 +47,9 @@ class RubyParserMath
 
     string_scanner.skip(/\s+/)
 
-    operator = string_scanner.scan(/\*|\+|\-)
-    puts operator
+    #operator = string_scanner.scan(/\*|\+|\-/)
+    operator = string_scanner.scan(/[\/|\*|\+|\-]{1,}/)
+    puts "operator: #{operator}"
 
     if operator
       @tokens << operator
@@ -106,7 +107,7 @@ class RubyParserMath
 
     else
 
-      left_value = expression['left'].to_i
+      left_value = expression['left'].to_f
       puts "left_value: #{left_value}"
 
     end
