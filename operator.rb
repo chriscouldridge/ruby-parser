@@ -7,7 +7,9 @@ class Operator
   def initialize(operator_combination)
 
     @operator_combination = operator_combination
+
     @simplified_operators = []
+
     @is_valid = true
 
   end
@@ -15,9 +17,12 @@ class Operator
   def evaluate
 
     num_multiply_operators = @operator_combination.count('*')
-    num_division_operators = @operator_combination.count('*')
-    num_add_operators = @operator_combination.count('*')
-    num_subtract_operators = @operator_combination.count('*')
+
+    num_division_operators = @operator_combination.count('/')
+
+    num_add_operators = @operator_combination.count('+')
+
+    num_subtract_operators = @operator_combination.count('-')
 
     puts "number of *: #{num_multiply_operators}"
     puts "number of /: #{num_division_operators}"
@@ -67,18 +72,7 @@ class Operator
     end
 
 
-
-
-    #case num_multiply_operators
-     # when > 0
-
-    #end
-
     return ('+').downcase.to_sym
-
-  end
-
-  def parse_add_substract
 
   end
 
