@@ -66,7 +66,7 @@ class RubyParserMath
 
     string_scanner.skip(/\s+/)
 
-    operator = string_scanner.scan(/[\/|\*|\+|\-]{1,}/)
+    operator = string_scanner.scan(/[\/|\*|\+|\-|\s]{1,}/)
 
     if operator
 
