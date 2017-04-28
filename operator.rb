@@ -45,11 +45,11 @@ class Operator
 
   def evaluate_positive_negative
 
-    pos_neg = @string_scanner.scan(/[\+|\-|\s]{1,}/)
+    pos_neg = @string_scanner.scan(/[\+|\-]+/)
 
     unless pos_neg != nil
 
-      return 'No pos neg'
+      return nil
 
     end
 
@@ -57,15 +57,24 @@ class Operator
 
     # puts "pos_neg: #{pos_neg}, - count_negative: #{count_negative}"
 
-    if count_negative % 2 == 1
+    if count_negative.odd?
 
-      return ('-').downcase.to_sym
+      return '-'
 
-      else
+    else
 
-        return ('+').downcase.to_sym
+      return '+'
 
       end
+
+  end
+
+
+  def evaluate_multiplication
+
+    puts 'evaluate_multiplication'
+
+    mult_div = @string_scanner.scan(/[\*|\/]+/)
 
   end
 
@@ -86,7 +95,28 @@ class Operator
 
     @is_end = 0
 
-    return evaluate_positive_negative
+    pos_neg = evaluate_positive_negative
+
+    puts "pos_neg #{pos_neg}"
+
+    if pos_neg == nil
+
+      mult_div = evaluate_multiplication
+
+      else
+
+      if mult_div != nil
+
+        return mult_div
+
+      else return pos_neg
+
+    end
+
+
+    end
+
+    #return evaluate_positive_negative
 
     # while @is_end < 2
 

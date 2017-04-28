@@ -19,6 +19,8 @@ class RubyParserMath
 
     @total
 
+    @string_scanner
+
   end
 
 
@@ -30,9 +32,9 @@ class RubyParserMath
 
     @string_scanner = create_string_scanner(ruby_file_content)
 
-    @full_expression = parse_expression(@string_scanner)
+    @full_expression = parse_expression
 
-    @total = (@is_expression ? (@full_expression).evaluate : ruby_file_content)
+    @total = (@is_expression ? @full_expression.evaluate : ruby_file_content)
 
   end
 
@@ -56,17 +58,17 @@ class RubyParserMath
   end
 
 
-  def parse_expression(string_scanner)
+  def parse_expression
 
-    left_of_expression = parse_value(string_scanner)
+    left_of_expression = parse_value()
 
     tokens << left_of_expression
 
     puts "@tokens: #{@tokens}"
 
-    string_scanner.skip(/\s+/)
+    @string_scanner.skip(/\s+/)
 
-    operator = string_scanner.scan(/[\/|\*|\+|\-|\s]{1,}/)
+    operator = @string_scanner.scan(/[\/|\*|\+|\-]{1,}/)
 
     if operator
 
@@ -76,7 +78,7 @@ class RubyParserMath
 
       operator_object = Operator.new(operator)
 
-      Expression.new(operator_object, left_of_expression, parse_expression(string_scanner))
+      Expression.new(operator_object, left_of_expression, parse_expression())
 
     else
 
@@ -87,32 +89,36 @@ class RubyParserMath
   end
 
 
-  def parse_value(string_scanner)
+  def parse_value
 
-    start = string_scanner.pos
+    start = @string_scanner.pos
 
-    if string_scanner.skip(/\(/)
+    if @string_scanner.skip(/\(/)
 
-      parse_expression(string_scanner).tap do
+      parse_expression().tap do
 
-        string_scanner.scan(/\)/) || raise('expression formed invalidly')
+        @string_scanner.scan(/\)/) || raise('expression formed invalidly')
 
       end
 
     else
 
-      parse_number(string_scanner)
+      parse_number()
 
     end
 
   end
 
 
-  def parse_number(string_scanner)
+  def parse_number
 
-    string_scanner.skip(/\s+/)
+    #puts "stringscanner pos: #{string_scanner.pos} end?: #{!string_scanner.rest?}"
 
-    string_scanner.scan(/[\d.]+/) || 'number expected'
+    @string_scanner.skip(/\s+/)
+
+    @string_scanner.scan(/[\d.]+/) || 'number expected'
+
+    #puts "stringscanner pos: #{string_scanner.pos} end?: #{!string_scanner.rest?}"
 
   end
 
