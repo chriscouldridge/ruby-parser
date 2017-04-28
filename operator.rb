@@ -22,11 +22,11 @@ class Operator
 
     num_division_operators = @operator_combination.count('/')
 
-    num_addition_operators = @operator_combination.count('+')
+    # num_addition_operators = @operator_combination.count('+')
 
-    num_subtract_operators = @operator_combination.count('-')
+    # num_subtract_operators = @operator_combination.count('-')
 
-    puts "number of *: #{num_multiply_operators}, number of /: #{num_division_operators}, number of +: #{num_addition_operators}, number of -: #{num_subtract_operators}"
+    # puts "number of *: #{num_multiply_operators}, number of /: #{num_division_operators}, number of +: #{num_addition_operators}, number of -: #{num_subtract_operators}"
 
     if num_multiply_operators > 1 || num_division_operators > 1
 
@@ -45,7 +45,7 @@ class Operator
 
   def evaluate_positive_negative
 
-    pos_neg = @string_scanner.scan(/[\+|\-]+/)
+    pos_neg = @string_scanner.scan(/[\+|\-|\s]+/)
 
     unless pos_neg != nil
 
@@ -74,7 +74,7 @@ class Operator
 
     puts 'evaluate_multiplication'
 
-    mult_div = @string_scanner.scan(/[\*|\/]+/)
+    mult_div = @string_scanner.scan(/[\*|\/|\s]+/)
 
   end
 
@@ -109,51 +109,13 @@ class Operator
 
         return mult_div
 
-      else return pos_neg
+      else
+
+        return pos_neg
+
+      end
 
     end
-
-
-    end
-
-    #return evaluate_positive_negative
-
-    # while @is_end < 2
-
-      # pos_neg = @string_scanner.scan(/[\+|\-]{1,}/)
-
-      # puts pos_neg
-
-      # if pos_neg == nil then
-
-        # @is_end += 1
-
-      # else
-
-        # @simplified_operators << pos_neg
-
-      # end
-
-      # multiply_divide = @string_scanner.scan(/[\/|\*]{1,}/)
-
-      # puts multiply_divide
-
-      # if multiply_divide == nil then
-
-        # @is_end += 1
-
-      # else
-
-        # @simplified_operators << multiply_divide
-
-      # end
-
-      # puts "@simplified_operators: #{@simplified_operators}"
-
-    # end
-
-
-    # return ('+').downcase.to_sym
 
   end
 
