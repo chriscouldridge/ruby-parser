@@ -72,7 +72,7 @@ class Operator
 
   def evaluate_multiplication
 
-    puts 'evaluate_multiplication'
+    puts "\nOperator.evaluate_multiplication"
 
     mult_div = @string_scanner.scan(/[\*|\/|\s]+/)
 
